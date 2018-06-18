@@ -21,9 +21,6 @@ def accept(sock, mask): # 需要两个参数
 # 回调函数
 def read(conn:socket.socket, mask):
     data = conn.recv(1024) # conn对象recv接收来自客户端的数据
-    # if not data or data == b'quit':
-    #     conn.close()
-    #     return
     msg = "Your msg is {}".format(repr(data))
     conn.send(msg.encode()) # conn连接send发送数据到客户端
 
