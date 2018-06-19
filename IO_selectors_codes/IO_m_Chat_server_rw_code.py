@@ -42,8 +42,8 @@ class ChatServer:
         self.clients[raddr] = (self.handle, Queue())
         self.selector.register(conn, selectors.EVENT_READ | selectors.EVENT_WRITE, self.clients[raddr])
 
-    def handle(self, key, mask):
-        if mask & selectors.EVENT_READ:
+    def handle(self, key, mask): # mask有三种情况：1，2，3
+        if mask & selectors.EVENT_READ: # read=1;取mask与read与
             sock = key.fileobj
             raddr = sock.getpeername()
             data = sock.recv(1024)
@@ -64,7 +64,7 @@ class ChatServer:
                 if isinstance(k.data, tuple):
                     k.data[1].put(data)
 
-        if mask & selectors.EVENT_WRITE:
+        if mask & selectors.EVENT_WRITE: # wirte = 2，取mask与write与
             if not key.data[1].empty():
                 key.fileobj.send(key.data[1].get()) # 从Queue中拿出数据发送
 

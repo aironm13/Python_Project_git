@@ -68,7 +68,7 @@ class ChatServer:
 
 def main():
     cs = ChatServer()
-    cs.start()
+    cs.start() # 2,
     while True:
         cmd = input('>>>').strip()
         if cmd == 'quit':
@@ -78,6 +78,6 @@ def main():
         logging.info(threading.enumerate())
 
 if __name__ == '__main__':
-    main()
+    main() # 1,
 
 
