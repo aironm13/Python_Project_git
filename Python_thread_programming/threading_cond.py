@@ -14,7 +14,7 @@ class Dispather:
         self.cond = Condition()
 
     def produce(self, total):
-        for _ in range(total)
+        for _ in range(total):
             data = random.randint(0, 100)
             # 使用上下文，开始生产数据
             with self.cond:
