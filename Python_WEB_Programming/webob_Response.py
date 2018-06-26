@@ -109,7 +109,10 @@ if __name__ == '__main__':
 #             start_response = args[0]
 #             # 把environ字典交给webob.Request实例化
 #             req = self.RequestClass(environ)
-#             # ???????????????????
+#             # req.ResponseClass()解释
+#             # req是webob.Request()实例，Request类继承BaseRequest类，在BaseRequest类属性中ResponseClass = None
+#             # 在webob包__init__.py文件中，定义了BaseRequest.ResponseClass = Response；在BaseRequest基类上定义一个类属性ResponseClass
+#             # 同时这个类属性指向Response类，所以相当于在req实例上定义一个实例属性指向一个新的Response()实例
 #             req.response = req.ResponseClass()
 #             try:
 #                 args, kw = self._prepare_args(None, None)
