@@ -31,13 +31,12 @@ class APP:
     @wsgify
     def __call__(self, request:Request):
         for method, pattern, handler in self._Route.ROUTETABLE:
-            if request.method not in method:
-                continue
-            matcher = pattern.match(request.path)
-            if matcher:
-                request.groups = matcher.groups()
-                request.groupdict = matcher.groupdict()
-                return handler(request)
+            if request.method in method or not method:
+                matcher = pattern.match(request.path)
+                if matcher:
+                    request.groups = matcher.groups()
+                    request.groupdict = matcher.groupdict()
+                    return handler(request)
         raise HTTPNotFound('<h1>ERROR PAGE</h1>')
 
 if __name__ == '__main__':
