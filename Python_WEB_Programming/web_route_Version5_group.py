@@ -5,6 +5,24 @@ from webob.exc import HTTPNotFound
 import re
 
 
+class AttrDict:
+    def __init__(self, dict):
+        # 不能使用self.dict = dict；会造成最大递归；
+        # 原因：self.dict = dict本身调用的就是__setattr__(self, key, value)魔术方法
+        # 使用对self本身的字典进行update更新，update通过一个字典更新另一个字典的操作
+        self.__dict__.update(dict)
+
+    # 不能修改属性
+    def __setattr__(self, key, value):
+        raise NotImplementedError
+
+    def __repr__(self):
+        return "<AttrDict {}>".format(self.__dict__)
+
+    def __len__(self):
+        return len(self.__dict__)
+
+
 class Router:
     def __init__(self, prefix=''):
         self.__prefix = prefix.rstrip('/\\')
@@ -38,7 +56,8 @@ class Router:
                 matcher = pattern.match(request.path.replace(self.__prefix, '', 1))
                 if matcher:
                     request.groups = matcher.groups()
-                    request.groupdict = matcher.groupdict()
+                    request.groupdict = AttrDict(matcher.groupdict())
+                    # request.groupdict = matcher.groupdict()
                     # 最后调用handler处理函数，传入request，进行处理
                     return handler(request)
 
@@ -73,6 +92,7 @@ APP.register(idx,  py)
 @idx.get(r'^/$')
 @idx.route(r'^/(?P<id>\d+)$')
 def indexhandler(request:Request):
+    print(request.groupdict)
     return '<h1>index hello word</h1>'
 
 # 4，装饰handler
