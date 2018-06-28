@@ -19,6 +19,7 @@ def worker(num):
     return num + 100
 
 if __name__ == '__main__':
+    # 支持上下文管理
     with futures.ProcessPoolExecutor(max_workers=3) as exector:
         fs = []
         for i in range(3):
