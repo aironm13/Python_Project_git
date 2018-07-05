@@ -1,4 +1,5 @@
-
+from queue import Queue
+from functools import wraps
 # 当使用回调函数的时候，担心很多小函数的扩展可能会弄乱程序控制流，通过某个方法来让代码看上去更像一个普通的执行序列
 
 
@@ -10,15 +11,14 @@ def apply_async(func, args, *, callback):
     callback(result)
 
 # Version1
-from queue import Queue
-from functools import wraps
+
 
 class Async:
     def __init__(self, func, args):
         self.func = func
         self.args = args
 
-def inlined_async(func):
+def init_async(func):
     @wraps(func) #  装饰器
     def wrapper(*args):
         f = func(*args) # 调用函数得出结果
@@ -31,14 +31,14 @@ def inlined_async(func):
                 apply_async(a.func, a.args, callback=result_queue.put)
             except StopIteration:
                 break
-    return wraps
+    return wrapper
 
 # 上面两个代码片段允许使用yield语句内联回调
 
 def add(x, y):
     return x + y
 
-@inlined_async
+@init_async
 def test():
     r = yield Async(add, (2, 3))
     print(r)
@@ -51,3 +51,6 @@ def test():
     print('Goodbye')
 
 test()
+
+# 总结：将复杂的控制流隐藏到生成器函数背后在第三方库和包中都能看到，
+# 如contextlib中的@contextmanager装饰器；通过一个yield语句将进入和离开上下文管理器粘合在一起
