@@ -1,0 +1,16 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>{{ title }}</title>
+</head>
+<body>
+<ul>
+    {% for key, value in dct.items %}
+    <li style="color: {{ forloop.revcounter0|divisibleby:'2'|yesno:'red,blue'}}">
+        {{ forloop.recounter}} {{ key + value }}
+    </li>
+    {% endfor %}
+</ul>
+</body>
+</html>
