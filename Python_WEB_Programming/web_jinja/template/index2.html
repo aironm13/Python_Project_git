@@ -14,6 +14,16 @@
     <h1>My Webpage</h1>
     {{ a_variable }}
 
+{% raw %}
+<ul>
+    {% for item in seq %}
+    <li>{{ item }}</li>
+    {% endfor %}
+</ul>
+{% endraw %}
+
+
+
 </body>
 </html>
 
